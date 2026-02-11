@@ -1,65 +1,199 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useTheme } from "next-themes";
 import Image from "next/image";
+import Link from "next/link";
+
+const projects = [
+  {
+    href: "https://github.com/visveshkhanna/otakuu.ai",
+    name: "otakuu.ai",
+    description:
+      "AI platform that brings anime characters to life with dynamic, multimodal interactions.",
+  },
+  {
+    href: "#",
+    name: "Experthire",
+    description:
+      "AI-powered hiring platform for resume analysis, candidate-job matching, and voice-based mock interviews.",
+  },
+  {
+    href: "#",
+    name: "Internal AI API Platform",
+    description:
+      "OpenRouter-style internal platform unifying OpenAI, Bedrock, Mistral, and custom models behind a single API.",
+  },
+  {
+    href: "#",
+    name: "Realtime Voice API Platform",
+    description:
+      "Multi-agent realtime voice stack for low-latency conversations, tools, and speech workflows.",
+  },
+];
+
+const projectLinkClasses =
+  "hover:underline hover:decoration-wavy transition-all hover:text-primary";
 
 export default function Home() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const cycleTheme = () => {
+    if (!mounted) return;
+
+    const order = ["system", "light", "dark"] as const;
+    const current = (theme as (typeof order)[number]) ?? "system";
+    const next = order[(order.indexOf(current) + 1) % order.length];
+
+    setTheme(next);
+  };
+
+  const getThemeLabel = () => {
+    if (!mounted) return "Theme";
+    if (theme === "system" || !theme) return "System";
+    if (theme === "light") return "Light";
+    return "Dark";
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("visveshkhanna@gmail.com");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (e) {
+      console.error("Failed to copy email", e);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="flex w-full min-h-full lg:h-dvh justify-center">
+      <div className="flex flex-col max-w-2xl h-full justify-between py-8 w-full px-4">
+        <section className="flex flex-col gap-8 h-full md:pt-12">
+          <header className="flex gap-4 items-end lg:pb-12">
+            <div className="relative size-[52px] rounded-full bg-muted overflow-hidden">
+              <Image
+                src="/visvesh.jpeg"
+                alt="Visvesh Khanna"
+                unoptimized
+                className="object-cover"
+                fill
+              />
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <p className="font-medium">Visvesh Khanna</p>
+              <p className="text-muted-foreground text-sm">
+                Software Engineer · AI & Full Stack
+              </p>
+            </div>
+          </header>
+
+          <div className="flex flex-col gap-3 text-muted-foreground text-sm">
+            <p>
+              Software engineer building AI products, realtime systems, and
+              developer tooling across the stack.
+            </p>
+
+            <p>
+              I&apos;ve worked on AI and voice platforms, learning engines,
+              full-stack dashboards, and DevOps pipelines at Educational
+              Initiatives, as a founding engineer at a B2B SaaS startup, and as
+              a freelancer for clients across the world.
+            </p>
+
+            <p className="font-medium text-foreground pt-2">Some of my work:</p>
+
+            <ul className="list-disc list-inside space-y-1">
+              {projects.map((project) => (
+                <li key={project.name}>
+                  {project.href === "#" ? (
+                    <span className="font-medium">{project.name}</span>
+                  ) : (
+                    <Link
+                      href={project.href}
+                      className={projectLinkClasses + " font-medium"}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {project.name}
+                    </Link>
+                  )}{" "}
+                  – {project.description}
+                </li>
+              ))}
+            </ul>
+
+            <p className="pt-2">
+              I ship production systems with React/Next.js, TypeScript, Python,
+              FastAPI, and AWS — often with LLMs, RAG, and realtime voice in the
+              loop.
+            </p>
+
+            <p>
+              For collaborations, reach me at{" "}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="underline-offset-4 hover:underline font-medium"
+                  >
+                    visveshkhanna@gmail.com
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>{copied ? "Copied!" : "Click to copy"}</p>
+                </TooltipContent>
+              </Tooltip>
+            </p>
+
+            <p>
+              You can also find me on{" "}
+              <Link
+                href="https://github.com/visveshkhanna"
+                className={projectLinkClasses}
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="https://linkedin.com/in/visveshkhanna"
+                className={projectLinkClasses}
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </Link>
+              .
+            </p>
+          </div>
+        </section>
+
+        <footer className="flex gap-4 justify-between items-center pt-20 sm:pt-0">
+          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Visvesh Khanna</p>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs text-muted-foreground"
+            onClick={cycleTheme}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            {getThemeLabel()}
+          </Button>
+        </footer>
+      </div>
+    </main>
   );
 }
