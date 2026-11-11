@@ -103,7 +103,11 @@ export function PreviewLink({
                 <span className="truncate rounded-md bg-muted px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
                   {host}
                 </span>
-                <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+                <ArrowUpRight
+                  aria-hidden
+                  strokeWidth={1.5}
+                  className="size-3.5 shrink-0 text-muted-foreground/70 transition-colors group-hover:text-muted-foreground"
+                />
               </div>
             </div>
           </a>

@@ -137,7 +137,7 @@ export default function Home() {
               <PreviewLink
                 href="https://ei.study"
                 preview={linkPreviews.ei}
-                className={projectLinkClasses}
+                className={projectLinkClasses + " font-medium text-foreground"}
               >
                 Educational Initiatives
               </PreviewLink>
