@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -9,14 +9,23 @@ import {
 } from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Link from "next/link";
+import { PreviewLink } from "@/components/preview-link";
+import { linkPreviews, type LinkPreview } from "@/lib/link-previews";
 
-const projects = [
+type Project = {
+  href: string;
+  name: string;
+  description: string;
+  preview?: LinkPreview;
+};
+
+const projects: Project[] = [
   {
     href: "https://github.com/visveshkhanna/otakuu.ai",
     name: "otakuu.ai",
     description:
       "AI platform that brings anime characters to life with dynamic, multimodal interactions.",
+    preview: linkPreviews.otakuu,
   },
   {
     href: "#",
@@ -38,16 +47,33 @@ const projects = [
   },
 ];
 
+const noopSubscribe = () => () => {};
+
 const projectLinkClasses =
   "hover:underline hover:decoration-wavy transition-all hover:text-primary";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false
+  );
   const [copied, setCopied] = useState(false);
 
+  // Warm the browser cache so hover cards open with their image ready.
   useEffect(() => {
-    setMounted(true);
+    const preload = () => {
+      for (const preview of Object.values(linkPreviews) as LinkPreview[]) {
+        if (preview.image) new window.Image().src = preview.image;
+      }
+    };
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(preload);
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(preload, 500);
+    return () => clearTimeout(id);
   }, []);
 
   const cycleTheme = () => {
@@ -107,9 +133,39 @@ export default function Home() {
 
             <p>
               I&apos;ve worked on AI and voice platforms, learning engines,
-              full-stack dashboards, and DevOps pipelines at Educational
-              Initiatives, as a founding engineer at a B2B SaaS startup, and as
-              a freelancer for clients across the world.
+              full-stack dashboards, and DevOps pipelines at{" "}
+              <PreviewLink
+                href="https://ei.study"
+                preview={linkPreviews.ei}
+                className={projectLinkClasses}
+              >
+                Educational Initiatives
+              </PreviewLink>
+              , as a founding engineer at a B2B SaaS startup, and as a
+              freelancer for clients across the world.
+            </p>
+
+            <p>
+              Lately I&apos;ve been building{" "}
+              <PreviewLink
+                href="https://aka.visvesh.dev"
+                preview={linkPreviews.aka}
+                className={projectLinkClasses + " font-medium text-foreground"}
+              >
+                aka
+              </PreviewLink>
+              , an open source CLI that gives every local dev server a stable,
+              named <code className="font-mono text-xs">.localhost</code> URL,
+              in any language or framework. It&apos;s a single Go binary, and
+              the code is on{" "}
+              <PreviewLink
+                href="https://github.com/visveshkhanna/aka"
+                preview={linkPreviews.akaGithub}
+                className={projectLinkClasses}
+              >
+                GitHub
+              </PreviewLink>
+              .
             </p>
 
             <p className="font-medium text-foreground pt-2">Some of my work:</p>
@@ -120,14 +176,18 @@ export default function Home() {
                   {project.href === "#" ? (
                     <span className="font-medium">{project.name}</span>
                   ) : (
-                    <Link
+                    <PreviewLink
                       href={project.href}
+                      preview={
+                        project.preview ?? {
+                          title: project.name,
+                          description: project.description,
+                        }
+                      }
                       className={projectLinkClasses + " font-medium"}
-                      target="_blank"
-                      rel="noreferrer"
                     >
                       {project.name}
-                    </Link>
+                    </PreviewLink>
                   )}{" "}
                   – {project.description}
                 </li>
@@ -160,23 +220,21 @@ export default function Home() {
 
             <p>
               You can also find me on{" "}
-              <Link
+              <PreviewLink
                 href="https://github.com/visveshkhanna"
+                preview={linkPreviews.github}
                 className={projectLinkClasses}
-                target="_blank"
-                rel="noreferrer"
               >
                 GitHub
-              </Link>{" "}
+              </PreviewLink>{" "}
               and{" "}
-              <Link
+              <PreviewLink
                 href="https://linkedin.com/in/visveshkhanna"
+                preview={linkPreviews.linkedin}
                 className={projectLinkClasses}
-                target="_blank"
-                rel="noreferrer"
               >
                 LinkedIn
-              </Link>
+              </PreviewLink>
               .
             </p>
           </div>
