@@ -12,6 +12,11 @@ const TEXT_FIELD = 'input, textarea, [contenteditable="true"]';
 
 type Mode = "hidden" | "cross" | "lock" | "native";
 
+/** Shift on its own shows the ruler; Shift as part of a shortcut does not. */
+function isRulerChord(e: KeyboardEvent | PointerEvent) {
+  return e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey;
+}
+
 /** What a click on `el` will do, as a single glyph drawn inside the brackets. */
 function intentGlyph(el: Element): string {
   const expanded = el.getAttribute("aria-expanded");
@@ -191,6 +196,10 @@ export function CrosshairCursor() {
       if (e.pointerType !== "mouse") return;
       x = e.clientX;
       y = e.clientY;
+      // The event's own modifier state is the source of truth: a keyup can be
+      // swallowed (⌘⇧4 screenshots, shortcuts that move focus), which would
+      // otherwise leave the ruler stuck on.
+      shift = isRulerChord(e);
       resolve(e.target as Element | null);
 
       const col = Math.floor(x / cellWidth);
@@ -242,13 +251,15 @@ export function CrosshairCursor() {
       schedule();
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Shift" && !document.activeElement?.closest(TEXT_FIELD))
-        setShift(true);
+      setShift(
+        isRulerChord(e) && !document.activeElement?.closest(TEXT_FIELD)
+      );
     };
-    const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "Shift") setShift(false);
-    };
+    const onKeyUp = (e: KeyboardEvent) => setShift(isRulerChord(e));
     const onBlur = () => setShift(false);
+    const onVisibility = () => {
+      if (document.hidden) setShift(false);
+    };
     const onLeave = () => {
       mode = "hidden";
       lastCol = -1;
@@ -263,6 +274,7 @@ export function CrosshairCursor() {
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("blur", onBlur);
+    document.addEventListener("visibilitychange", onVisibility);
     root.addEventListener("pointerleave", onLeave);
 
     return () => {
@@ -274,6 +286,7 @@ export function CrosshairCursor() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("blur", onBlur);
+      document.removeEventListener("visibilitychange", onVisibility);
       root.removeEventListener("pointerleave", onLeave);
       root.classList.remove("has-crosshair");
     };
