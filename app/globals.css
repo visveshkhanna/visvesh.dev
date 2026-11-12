@@ -120,3 +120,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Crosshair cursor (components/crosshair-cursor.tsx) hides the native one. */
+html.has-crosshair,
+html.has-crosshair * {
+  cursor: none !important;
+}
+html.has-crosshair :is(input, textarea, [contenteditable="true"]) {
+  cursor: text !important;
+}
+
+/* Decode text (components/decode-text.tsx). */
+.decode {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+.decode[data-active="true"] > .decode-text {
+  color: transparent;
+}
+.decode-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
