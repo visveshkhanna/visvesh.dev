@@ -1,14 +1,10 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { HireSection } from "@/components/hire-section";
 import { PreviewLink } from "@/components/preview-link";
 import { linkPreviews, type LinkPreview } from "@/lib/link-previews";
 
@@ -59,7 +55,6 @@ export default function Home() {
     () => true,
     () => false
   );
-  const [copied, setCopied] = useState(false);
 
   // Warm the browser cache so hover cards open with their image ready.
   useEffect(() => {
@@ -93,20 +88,10 @@ export default function Home() {
     return "Dark";
   };
 
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText("visveshkhanna@gmail.com");
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch (e) {
-      console.error("Failed to copy email", e);
-    }
-  };
-
   return (
-    <main className="flex w-full min-h-full lg:h-dvh justify-center">
+    <main className="flex w-full min-h-dvh justify-center">
       <div className="flex flex-col max-w-2xl h-full justify-between py-8 w-full px-4">
-        <section className="flex flex-col gap-8 h-full md:pt-12">
+        <section className="flex flex-col gap-8 md:pt-12">
           <header className="flex gap-4 items-end lg:pb-12">
             <div className="relative size-[52px] rounded-full bg-muted overflow-hidden">
               <Image
@@ -123,6 +108,12 @@ export default function Home() {
                 Software Engineer · AI & Full Stack
               </p>
             </div>
+            <a
+              href="#hire"
+              className="ml-auto self-start font-mono text-xs text-muted-foreground transition-colors hover:text-foreground md:self-end"
+            >
+              hire ↓
+            </a>
           </header>
 
           <div className="flex flex-col gap-3 text-muted-foreground text-sm">
@@ -200,47 +191,12 @@ export default function Home() {
               loop.
             </p>
 
-            <p>
-              For collaborations, reach me at{" "}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    onClick={handleCopyEmail}
-                    className="underline-offset-4 hover:underline font-medium"
-                  >
-                    visveshkhanna@gmail.com
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  <p>{copied ? "Copied!" : "Click to copy"}</p>
-                </TooltipContent>
-              </Tooltip>
-            </p>
-
-            <p>
-              You can also find me on{" "}
-              <PreviewLink
-                href="https://github.com/visveshkhanna"
-                preview={linkPreviews.github}
-                className={projectLinkClasses}
-              >
-                GitHub
-              </PreviewLink>{" "}
-              and{" "}
-              <PreviewLink
-                href="https://linkedin.com/in/visveshkhanna"
-                preview={linkPreviews.linkedin}
-                className={projectLinkClasses}
-              >
-                LinkedIn
-              </PreviewLink>
-              .
-            </p>
           </div>
+
+          <HireSection />
         </section>
 
-        <footer className="flex gap-4 justify-between items-center pt-20 sm:pt-0">
+        <footer className="flex gap-4 justify-between items-center pt-16">
           <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Visvesh Khanna</p>
           <Button
             variant="ghost"
