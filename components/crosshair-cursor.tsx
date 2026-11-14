@@ -96,7 +96,9 @@ export function CrosshairCursor() {
       ctx.fillStyle = ink;
 
       for (const [key, cell] of trail) {
-        const age = now - cell.born;
+        // rAF's timestamp is the frame's start, which can be a few ms before
+        // the performance.now() a cell was stamped with, so clamp at zero.
+        const age = Math.max(0, now - cell.born);
         if (age >= TRAIL_MS) {
           trail.delete(key);
           continue;
@@ -104,7 +106,7 @@ export function CrosshairCursor() {
         const t = age / TRAIL_MS;
         ctx.globalAlpha = 0.5 * (1 - t);
         ctx.fillText(
-          RAMP[Math.floor(t * RAMP.length)],
+          RAMP[Math.min(RAMP.length - 1, Math.floor(t * RAMP.length))],
           (cell.col + 0.5) * cellWidth,
           (cell.row + 0.5) * CELL_HEIGHT
         );
@@ -142,7 +144,7 @@ export function CrosshairCursor() {
         ctx.fillRect(cx - 7, cy, 15, 1);
         ctx.fillRect(cx, cy - 7, 1, 15);
       } else {
-        const p = reduceMotion ? 1 : Math.min(1, (now - lockStart) / LOCK_MS);
+        const p = reduceMotion ? 1 : Math.min(1, Math.max(0, now - lockStart) / LOCK_MS);
         const eased = 1 - Math.pow(1 - p, 3);
         const r = Math.round(15 - 5 * eased);
         const arm = 5;
