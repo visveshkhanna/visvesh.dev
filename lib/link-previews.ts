@@ -22,6 +22,18 @@ export const linkPreviews = {
       "Source, releases and issues for aka. A single static Go binary for macOS, Linux and Windows.",
     image: "https://opengraph.githubassets.com/1/visveshkhanna/aka",
   },
+  switchboard: {
+    title: "Switchboard",
+    description:
+      "One local MCP endpoint for all your AI agents. Group MCP servers into profiles and give each client only the tools it should see.",
+    image: "https://switchboard.visvesh.dev/og/home.png",
+  },
+  switchboardGithub: {
+    title: "visveshkhanna/Switchboard",
+    description:
+      "Source, releases and issues for Switchboard. Install with npx mcp-switchboard up.",
+    image: "https://opengraph.githubassets.com/1/visveshkhanna/Switchboard",
+  },
   ei: {
     title: "Educational Initiatives",
     description:

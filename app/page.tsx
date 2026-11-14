@@ -137,24 +137,41 @@ export default function Home() {
             </p>
 
             <p>
-              Lately I&apos;ve been building{" "}
+              Lately I&apos;ve been building open source developer tools.{" "}
               <PreviewLink
                 href="https://aka.visvesh.dev"
                 preview={linkPreviews.aka}
                 className={projectLinkClasses + " font-medium text-foreground"}
               >
                 aka
-              </PreviewLink>
-              , an open source CLI that gives every local dev server a stable,
-              named <code className="font-mono text-xs">.localhost</code> URL,
-              in any language or framework. It&apos;s a single Go binary, and
-              the code is on{" "}
+              </PreviewLink>{" "}
+              gives every local dev server a stable, named{" "}
+              <code className="font-mono text-xs">.localhost</code> URL, in any
+              language or framework.{" "}
+              <PreviewLink
+                href="https://switchboard.visvesh.dev"
+                preview={linkPreviews.switchboard}
+                className={projectLinkClasses + " font-medium text-foreground"}
+              >
+                Switchboard
+              </PreviewLink>{" "}
+              is one local MCP endpoint for all your AI agents, giving Cursor,
+              Claude Code and the rest only the tools each should see. The code
+              for both is on GitHub:{" "}
               <PreviewLink
                 href="https://github.com/visveshkhanna/aka"
                 preview={linkPreviews.akaGithub}
                 className={projectLinkClasses}
               >
-                GitHub
+                aka
+              </PreviewLink>{" "}
+              and{" "}
+              <PreviewLink
+                href="https://github.com/visveshkhanna/Switchboard"
+                preview={linkPreviews.switchboardGithub}
+                className={projectLinkClasses}
+              >
+                Switchboard
               </PreviewLink>
               .
             </p>

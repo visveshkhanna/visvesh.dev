@@ -87,3 +87,4 @@ pnpm deploy
 ## Related
 
 - [aka](https://github.com/visveshkhanna/aka): stable, named `.localhost` URLs for every local dev server. Docs at [aka.visvesh.dev](https://aka.visvesh.dev).
+- [Switchboard](https://github.com/visveshkhanna/Switchboard): one local MCP endpoint for all your AI agents. Docs at [switchboard.visvesh.dev](https://switchboard.visvesh.dev).
