@@ -16,12 +16,6 @@ export const linkPreviews = {
       "Stable, named .localhost URLs for every local dev server, in any language or framework. aka works out the port by itself.",
     image: "https://aka.visvesh.dev/og/docs/image.png",
   },
-  akaGithub: {
-    title: "visveshkhanna/aka",
-    description:
-      "Source, releases and issues for aka. A single static Go binary for macOS, Linux and Windows.",
-    image: "https://opengraph.githubassets.com/1/visveshkhanna/aka",
-  },
   switchboard: {
     title: "Switchboard",
     description:
@@ -46,6 +40,10 @@ export const linkPreviews = {
     title: "otakuu.ai",
     description:
       "AI platform that brings anime characters to life with dynamic, multimodal interactions.",
+    // Saved locally: Instagram's image URLs are signed and expire.
+    image: "/previews/otakuu.jpg",
+    imageFit: "contain",
+    imageBackground: "#000000",
   },
   github: {
     title: "visveshkhanna",

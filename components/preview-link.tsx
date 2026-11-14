@@ -13,7 +13,9 @@ function hostOf(href: string) {
     const url = new URL(href);
     const host = url.hostname.replace(/^www\./, "");
     const path = url.pathname.replace(/\/$/, "");
-    return path && host === "github.com" ? `${host}${path}` : host;
+    // Profile-style sites read better with the handle or repo in the chip.
+    const showPath = host === "github.com" || host === "instagram.com";
+    return path && showPath ? `${host}${path}` : host;
   } catch {
     return href;
   }

@@ -12,34 +12,23 @@ type Project = {
   href: string;
   name: string;
   description: string;
-  preview?: LinkPreview;
+  preview: LinkPreview;
 };
 
 const projects: Project[] = [
   {
-    href: "https://github.com/visveshkhanna/otakuu.ai",
+    href: "https://www.instagram.com/otakuu.ai/",
     name: "otakuu.ai",
     description:
       "AI platform that brings anime characters to life with dynamic, multimodal interactions.",
     preview: linkPreviews.otakuu,
   },
   {
-    href: "#",
-    name: "Experthire",
+    href: "https://aka.visvesh.dev",
+    name: "aka",
     description:
-      "AI-powered hiring platform for resume analysis, candidate-job matching, and voice-based mock interviews.",
-  },
-  {
-    href: "#",
-    name: "Internal AI API Platform",
-    description:
-      "OpenRouter-style internal platform unifying OpenAI, Bedrock, Mistral, and custom models behind a single API.",
-  },
-  {
-    href: "#",
-    name: "Realtime Voice API Platform",
-    description:
-      "Multi-agent realtime voice stack for low-latency conversations, tools, and speech workflows.",
+      "Open source CLI that gives every local dev server a stable, named .localhost URL, in any language or framework.",
+    preview: linkPreviews.aka,
   },
 ];
 
@@ -137,41 +126,23 @@ export default function Home() {
             </p>
 
             <p>
-              Lately I&apos;ve been building open source developer tools.{" "}
-              <PreviewLink
-                href="https://aka.visvesh.dev"
-                preview={linkPreviews.aka}
-                className={projectLinkClasses + " font-medium text-foreground"}
-              >
-                aka
-              </PreviewLink>{" "}
-              gives every local dev server a stable, named{" "}
-              <code className="font-mono text-xs">.localhost</code> URL, in any
-              language or framework.{" "}
+              Currently working on{" "}
               <PreviewLink
                 href="https://switchboard.visvesh.dev"
                 preview={linkPreviews.switchboard}
                 className={projectLinkClasses + " font-medium text-foreground"}
               >
                 Switchboard
-              </PreviewLink>{" "}
-              is one local MCP endpoint for all your AI agents, giving Cursor,
-              Claude Code and the rest only the tools each should see. The code
-              for both is on GitHub:{" "}
-              <PreviewLink
-                href="https://github.com/visveshkhanna/aka"
-                preview={linkPreviews.akaGithub}
-                className={projectLinkClasses}
-              >
-                aka
-              </PreviewLink>{" "}
-              and{" "}
+              </PreviewLink>
+              , one local MCP endpoint for all your AI agents. It groups MCP
+              servers into profiles and gives Cursor, Claude Code and the rest
+              only the tools each should see. It&apos;s open source on{" "}
               <PreviewLink
                 href="https://github.com/visveshkhanna/Switchboard"
                 preview={linkPreviews.switchboardGithub}
                 className={projectLinkClasses}
               >
-                Switchboard
+                GitHub
               </PreviewLink>
               .
             </p>
@@ -181,22 +152,13 @@ export default function Home() {
             <ul className="list-disc list-inside space-y-1">
               {projects.map((project) => (
                 <li key={project.name}>
-                  {project.href === "#" ? (
-                    <span className="font-medium">{project.name}</span>
-                  ) : (
-                    <PreviewLink
-                      href={project.href}
-                      preview={
-                        project.preview ?? {
-                          title: project.name,
-                          description: project.description,
-                        }
-                      }
-                      className={projectLinkClasses + " font-medium"}
-                    >
-                      {project.name}
-                    </PreviewLink>
-                  )}{" "}
+                  <PreviewLink
+                    href={project.href}
+                    preview={project.preview}
+                    className={projectLinkClasses + " font-medium"}
+                  >
+                    {project.name}
+                  </PreviewLink>{" "}
                   – {project.description}
                 </li>
               ))}
